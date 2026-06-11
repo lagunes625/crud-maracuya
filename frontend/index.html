@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CRUD Enfermedades Maracuyá</title>
+</head>
+
+<body>
+
+    <h1>CRUD Enfermedades del Maracuyá</h1>
+
+    <label>ID:</label>
+    <input type="number" id="id"><br><br>
+
+    <label>Nombre:</label>
+    <input type="text" id="nombre"><br><br>
+
+    <label>Descripción:</label>
+    <input type="text" id="descripcion"><br><br>
+
+    <button onclick="agregarEnfermedad()">Agregar</button>
+
+    <button onclick="buscarEnfermedad()">Buscar</button>
+
+    <button onclick="modificarEnfermedad()">Modificar</button>
+
+    <button onclick="eliminarEnfermedad()">Eliminar</button>
+
+    <button onclick="listarEnfermedades()">Listar</button>
+
+    <hr>
+
+    <h2>Resultados</h2>
+
+    <div id="resultado"></div>
+
+<script>
+
+function agregarEnfermedad() {
+
+    fetch('http://127.0.0.1:5000/enfermedades', {
+
+        method: 'POST',
+
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+
+            id: document.getElementById('id').value,
+
+            nombre: document.getElementById('nombre').value,
+
+            descripcion: document.getElementById('descripcion').value
+
+        })
+
+    })
+
+    .then(response => response.json())
+    .then(data => alert(data.mensaje));
+}
+
+
+
+function listarEnfermedades() {
+
+    fetch('http://127.0.0.1:5000/enfermedades')
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        document.getElementById('resultado').innerHTML =
+        JSON.stringify(data, null, 2);
+
+    });
+
+}
+
+
+
+function buscarEnfermedad() {
+
+    let id = document.getElementById('id').value;
+
+    fetch('http://127.0.0.1:5000/enfermedades/' + id)
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        document.getElementById('resultado').innerHTML =
+        JSON.stringify(data, null, 2);
+
+    });
+
+}
+
+
+
+function modificarEnfermedad() {
+
+    let id = document.getElementById('id').value;
+
+    fetch('http://127.0.0.1:5000/enfermedades/' + id, {
+
+        method: 'PUT',
+
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+
+            nombre: document.getElementById('nombre').value,
+
+            descripcion: document.getElementById('descripcion').value
+
+        })
+
+    })
+
+    .then(response => response.json())
+
+    .then(data => alert(data.mensaje));
+
+}
+
+
+
+function eliminarEnfermedad() {
+
+    let id = document.getElementById('id').value;
+
+    fetch('http://127.0.0.1:5000/enfermedades/' + id, {
+
+        method: 'DELETE'
+
+    })
+
+    .then(response => response.json())
+
+    .then(data => alert(data.mensaje));
+
+}
+
+</script>
+
+</body>
+</html>
