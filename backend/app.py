@@ -44,6 +44,19 @@ def leer(id):
     return jsonify({
         "mensaje":"Enfermedad no encontrada"
     }), 404
+    
+@app.route('/enfermedades/nombre/<nombre>', methods=['GET'])
+def buscar_por_nombre(nombre):
+
+    for enfermedad in enfermedades:
+
+        if enfermedad["nombre"].lower() == nombre.lower():
+
+            return jsonify(enfermedad)
+
+    return jsonify({
+        "mensaje":"Enfermedad no encontrada"
+    }), 404
 
 @app.route('/enfermedades/<int:id>', methods=['PUT'])
 def modificar(id):
